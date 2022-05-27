@@ -72,25 +72,29 @@ int main() {
         }
 
         // MOVE PLAYER RULE SECTION
-        if (arrowKey == 72 && playerPosY > 0) {               // Upward rule
+        // Upward rule
+        if (arrowKey == 72 && playerPosY > 0) {
             if (map[playerPosY - 1][playerPosX] == 'R' || map[playerPosY - 1][playerPosX] == 'P' || map[playerPosY - 1][playerPosX] == 'B') {
                 playerPosY--;
             }
         }
         
-        if (arrowKey == 75 && playerPosX > 0) {        // Leftward rule
+        // Leftward rule
+        if (arrowKey == 75 && playerPosX > 0) {
             if (map[playerPosY][playerPosX - 1] == 'R' || map[playerPosY][playerPosX - 1] == 'P' || map[playerPosY][playerPosX - 1] == 'B') {
                 playerPosX--;
             }
         } 
         
-        if (arrowKey == 77 && playerPosX < (mapSize - 1)) {  // Rightward rule
+        // Rightward rule
+        if (arrowKey == 77 && playerPosX < (mapSize - 1)) {
             if (map[playerPosY][playerPosX + 1] == 'R' || map[playerPosY][playerPosX + 1] == 'P' || map[playerPosY][playerPosX + 1] == 'B') {
                 playerPosX++;
             }
         }
         
-        if (arrowKey == 80 && playerPosY < (mapSize - 1)) {  // Downward rule
+        // Downward rule
+        if (arrowKey == 80 && playerPosY < (mapSize - 1)) {
             if (map[playerPosY + 1][playerPosX] == 'R' || map[playerPosY + 1][playerPosX] == 'P' || map[playerPosY + 1][playerPosX] == 'B') {
                 playerPosY++;
             }
