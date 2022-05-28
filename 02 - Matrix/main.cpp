@@ -9,18 +9,39 @@ T = Tree    (Player can't move on it)
 S = Stone   (Player can't move on it) */
 
 #include <conio.h>
+
 #include <iostream>
 using namespace std;
 
+struct pokemonStats {
+    string name;
+    int hp;
+    int atk;
+    int def;
+    int spd;
+};
+
 int main() {
-    int mapSize = 20;     // Size of the map
+    int mapSize = 20;      // Size of the map
     int playerPosX = 10;   // Player's position X
-    int playerPosY = 19;  // Player's position Y
-
-    cout << "Karakter ada di y:" << playerPosY << ", x:" << playerPosX << "\n";
-
-    // Map
+    int playerPosY = 19;   // Player's position Y
+    int pokemonCount = 0;  // Count of pokemon caught
+    int pokemonChance;     // Chance of pokemon being caught
+    pokemonStats pokemon[] = {
+        // Pokemon list
+        {"Bulbasaur",
+         45,
+         49,
+         49,
+         45},
+        {"Ivysaur",
+         60,
+         62,
+         63,
+         60},
+    };
     char map[mapSize][mapSize] = {
+        // Map
         {'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'R', 'R', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'},  // 1
         {'S', 'S', 'P', 'B', 'B', 'B', 'S', 'P', 'B', 'R', 'R', 'S', 'S', 'P', 'P', 'P', 'P', 'B', 'B', 'B'},  // 2
         {'P', 'P', 'P', 'B', 'B', 'B', 'S', 'P', 'T', 'R', 'R', 'T', 'S', 'R', 'R', 'P', 'P', 'R', 'B', 'B'},  // 3
@@ -41,77 +62,124 @@ int main() {
         {'S', 'S', 'B', 'B', 'T', 'R', 'R', 'R', 'T', 'R', 'R', 'T', 'R', 'R', 'B', 'B', 'S', 'P', 'P', 'P'},  // 18
         {'S', 'S', 'B', 'B', 'B', 'R', 'R', 'R', 'R', 'R', 'R', 'S', 'S', 'R', 'B', 'B', 'P', 'R', 'R', 'S'},  // 19
         {'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'R', 'R', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W', 'W'},  // 20
-        //1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20
+        // 1    2    3    4    5    6    7    8    9    10   11   12   13   14   15   16   17   18   19   20
     };
 
-    /*
-    ARROW_KEY_UP    = 72
-    ARROW_KEY_LEFT  = 75
-    ARROW_KEY_RIGHT = 77
-    ARROW_KEY_DOWN  = 80
-    */
-
-    int arrowKey = 0;
+    cout << "Player position, y:" << playerPosY + 1 << ", x:" << playerPosX + 1 << "\n";
+    cout << "Game rules:\n";
+    cout << "@ = Player (Player location)\n";
+    cout << "R = Road   (Player can move on it)\n";
+    cout << "P = Puddle (Player can move on it)\n";
+    cout << "B = Bush   (Player can move on it)\n";
+    cout << "S = Stone  (Player can't move on it)\n";
+    cout << "T = Tree   (Player can't move on it)\n";
+    cout << "W = Wall   (Player can't move on it)\n";
+    int keyIn = 0;
 
     // GAME LOOP SECTION
     while (true) {
-        // Input keyboard
+        // Chance of pokemon appearing (20% chance)
+        pokemonChance = rand() % 10;
+
+        /* Input keyboard
+        ARROW_KEY_UP    = 72
+        ARROW_KEY_LEFT  = 75
+        ARROW_KEY_RIGHT = 77
+        ARROW_KEY_DOWN  = 80
+        ESC_KEY         = 27 */
     arrow_input:
-        cout << "Masukkan arrow key: ";
-        arrowKey = getch();
-        if (arrowKey == 72) {
+        cout << "Press ARROW KEY to move or ESC to quit\n";
+        cout << "Insert key: ";
+        keyIn = getch();
+        if (keyIn == 72) {
             cout << "Up\n";
-        } else if (arrowKey == 75) {
+        } else if (keyIn == 75) {
             cout << "Left\n";
-        } else if (arrowKey == 77) {
+        } else if (keyIn == 77) {
             cout << "Right\n";
-        } else if (arrowKey == 80) {
+        } else if (keyIn == 80) {
             cout << "Down\n";
+        } else if (keyIn == 27) {
+            cout << "Exit\n";
+            break;
         } else {
             goto arrow_input;
         }
 
+        // Clear screen
+        system("cls");
+
         // MOVE PLAYER RULE SECTION
-        // Upward rule
-        if (arrowKey == 72 && playerPosY > 0) {
+        if (keyIn == 72 && playerPosY > 0) {
             if (map[playerPosY - 1][playerPosX] == 'R' || map[playerPosY - 1][playerPosX] == 'P' || map[playerPosY - 1][playerPosX] == 'B') {
                 playerPosY--;
             }
-        }
-        
-        // Leftward rule
-        if (arrowKey == 75 && playerPosX > 0) {
+        } else if (keyIn == 75 && playerPosX > 0) {
             if (map[playerPosY][playerPosX - 1] == 'R' || map[playerPosY][playerPosX - 1] == 'P' || map[playerPosY][playerPosX - 1] == 'B') {
                 playerPosX--;
             }
-        } 
-        
-        // Rightward rule
-        if (arrowKey == 77 && playerPosX < (mapSize - 1)) {
+        } else if (keyIn == 77 && playerPosX < (mapSize - 1)) {
             if (map[playerPosY][playerPosX + 1] == 'R' || map[playerPosY][playerPosX + 1] == 'P' || map[playerPosY][playerPosX + 1] == 'B') {
                 playerPosX++;
             }
-        }
-        
-        // Downward rule
-        if (arrowKey == 80 && playerPosY < (mapSize - 1)) {
+        } else if (keyIn == 80 && playerPosY < (mapSize - 1)) {
             if (map[playerPosY + 1][playerPosX] == 'R' || map[playerPosY + 1][playerPosX] == 'P' || map[playerPosY + 1][playerPosX] == 'B') {
                 playerPosY++;
             }
         }
 
+        // DRAW MAP SECTION
         // Print map and player position
         for (int y = 0; y < mapSize; y++) {
             for (int x = 0; x < mapSize; x++) {
                 if (y == playerPosY && x == playerPosX) {
-                    cout << "@" << " ";
+                    cout << "@"
+                         << " ";
                 } else {
                     cout << map[y][x] << " ";
                 }
             }
             cout << endl;
         }
+
+        // Alert message can't move on defined objects
+        if (keyIn == 72 && playerPosY > 0) {
+            if (map[playerPosY - 1][playerPosX] == 'W' || map[playerPosY - 1][playerPosX] == 'S' || map[playerPosY - 1][playerPosX] == 'T') {
+                cout << "You can't go there!\n";
+            }
+        } else if (keyIn == 75 && playerPosX > 0) {
+            if (map[playerPosY][playerPosX - 1] == 'W' || map[playerPosY][playerPosX - 1] == 'S' || map[playerPosY][playerPosX - 1] == 'T') {
+                cout << "You can't go there!\n";
+            }
+        } else if (keyIn == 77 && playerPosX < (mapSize - 1)) {
+            if (map[playerPosY][playerPosX + 1] == 'W' || map[playerPosY][playerPosX + 1] == 'S' || map[playerPosY][playerPosX + 1] == 'T') {
+                cout << "You can't go there!\n";
+            }
+        } else if (keyIn == 80 && playerPosY < (mapSize - 1)) {
+            if (map[playerPosY + 1][playerPosX] == 'W' || map[playerPosY + 1][playerPosX] == 'S' || map[playerPosY + 1][playerPosX] == 'T') {
+                cout << "You can't go there!\n";
+            }
+        }
+
+        // POKEMON APPEAR RULE SECTION
+        if (map[playerPosY][playerPosX] == 'R') {
+            cout << "You are on a road\n";
+        } else if (map[playerPosY][playerPosX] == 'P') {
+            cout << "You are on a puddle\n";
+        } else if (map[playerPosY][playerPosX] == 'B') {
+            cout << "You are on a bush\n";
+            if (pokemonChance == 1) {
+                cout << "You found a " << pokemon[0].name << endl;
+                pokemonCount++;
+            } else if (pokemonChance == 2) {
+                cout << "You found a " << pokemon[1].name << endl;
+                pokemonCount++;
+            }
+            pokemonChance = 0;
+        }
     }
 
+    cout << "Game exitted...";
+    getch();
     return 0;
 }
