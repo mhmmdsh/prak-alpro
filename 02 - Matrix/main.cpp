@@ -1,16 +1,18 @@
 /* 2D TILE GAMES
 POKEMON GAME
-@ = Player  (Player location)
-R = Road    (Player can move on it)
-P = Puddle  (Player can move on it)
-B = Bush    (Player can move on it)
-W = Wall    (Player can't move on it)
-T = Tree    (Player can't move on it)
-S = Stone   (Player can't move on it) */
+@ = Player  (Purple - Player location)
+R = Road    (White  - Player can move on it)
+P = Puddle  (Aqua   - can move on it)
+B = Bush    (Green  - can move on it)
+W = Wall    (Red    - Player can't move on it)
+T = Tree    (Yellow - Player can't move on it)
+S = Stone   (Grey   - Player can't move on it) */
 
 #include <conio.h>
 
 #include <iostream>
+
+#include "include\color.hpp"
 using namespace std;
 
 struct pokemonStats {
@@ -133,10 +135,21 @@ int main() {
         for (int y = 0; y < mapSize; y++) {
             for (int x = 0; x < mapSize; x++) {
                 if (y == playerPosY && x == playerPosX) {
-                    cout << "@"
-                         << " ";
+                    cout << dye::purple("@") << " ";
                 } else {
-                    cout << map[y][x] << " ";
+                    if (map[y][x] == 'P') {
+                        cout << dye::aqua("P") << " ";
+                    } else if (map[y][x] == 'B') {
+                        cout << dye::light_green("B") << " ";
+                    } else if (map[y][x] == 'T') {
+                        cout << dye::yellow("T") << " ";
+                    } else if (map[y][x] == 'W') {
+                        cout << dye::red("W") << " ";
+                    } else if (map[y][x] == 'S') {
+                        cout << dye::grey("S") << " ";
+                    } else {
+                        cout << map[y][x] << " ";
+                    }
                 }
             }
             cout << endl;
