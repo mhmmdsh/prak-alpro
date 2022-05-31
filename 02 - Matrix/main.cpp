@@ -9,9 +9,7 @@ T = Tree    (Yellow - Player can't move on it)
 S = Stone   (Grey   - Player can't move on it) */
 
 #include <conio.h>
-
 #include <iostream>
-
 #include "include\color.hpp"
 using namespace std;
 
